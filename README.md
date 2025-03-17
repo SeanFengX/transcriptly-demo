@@ -53,7 +53,9 @@ Success Response (200 OK):
 		},
     {
       "id": 3,
-      ...
+      "start": 3.84,
+      "end": 5.56,
+      "text": "want isn't what you"
     },
     {
 			"id": 176,
