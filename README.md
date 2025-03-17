@@ -7,7 +7,7 @@ A service API for retrieving YouTube video transcripts.
 ### Get Video Transcript
 
 ```http
-POST /api/transcript
+POST https://transcriptly.org/api/v1/transcript
 ```
 #### Request Headers
 
@@ -132,7 +132,7 @@ yarn install
 2. Configure environment variables:
 Create a `.env.local` file and add:
 ```env
-API_KEY=your_api_key_here
+TRANSCRIPTLY_API_KEY=your_api_key_here
 ```
 
 3. Start the development server:
