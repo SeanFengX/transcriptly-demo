@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YouTube Transcript API
 
-## Getting Started
+A service API for retrieving YouTube video transcripts.
 
-First, run the development server:
+## API Endpoint
 
+### Get Video Transcript
+
+```http
+POST /api/transcript
+```
+#### Request Headers
+
+| Header | Type | Required | Description |
+|-----------|------|----------|-------------|
+| x-api-key | string | Yes | API key |
+
+#### Request Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| url | string | Yes | YouTube video URL |
+| language | string | No | Language of the transcript to be returned, default is English |
+
+#### Request Example
+
+```json
+{
+  "url": "https://www.youtube.com/watch?v=your_video_id",
+  "language": "en"
+}
+```
+
+#### Response Format
+
+Success Response (200 OK):
+```json
+{
+  "code": 200,
+  "message": "Transcript generated successfully",
+  "data": {
+    "success": true,
+		"data": [{
+			"id": 1,
+			"start": 0.12,
+			"end": 2.159,
+			"text": "this might sound crazy but the way to"
+		}, {
+			"id": 2,
+			"start": 2.159,
+			"end": 3.84,
+			"text": "achieve what you want isn't what you"
+		},
+    ...
+    {
+			"id": 176,
+			"start": 395.56,
+			"end": 397.919,
+			"text": "video"
+		}],
+		"url": "https://www.youtube.com/watch?v=BJ2NvjS7Aio",
+		"language": "en",
+		"total": 176
+  }
+}
+```
+
+Error Response (HTTP status 400 Bad Request):
+```json
+{
+  "code": 400,
+  "message": "Invalid request body"
+}
+```
+Error Response (HTTP status 400 Bad Request):
+```json
+{
+  "code": 4001,
+  "message": "Invalid YouTube URL"
+}
+```
+
+Error Response (HTTP status 401 Unauthorized):
+```json
+{
+  "code": 401,
+  "message": "Invalid API key"
+}
+```
+
+Error Response (HTTP status 403 Forbidden):
+```json
+{
+  "code": 403,
+  "message": "Insufficient credits"
+}
+```
+
+Error Response (HTTP status 429 Too Many Requests):
+```json
+{
+  "code": 429,
+  "message": "Access rate limit exceeded"
+}
+```
+
+Error Response (HTTP status 500 Internal Server Error):
+```json
+{
+  "code": 5001,
+  "message": "Transcript generated failed",
+  "data": {
+    "success": false,
+    "data": [],
+    "url": "https://www.youtube.com/watch?v=-FNIAzYLCQA",
+    "language": "123",
+    "total": 0,
+    "error": "API request failed: 400"
+  }
+}
+```
+
+## Local Development
+
+1. Clone the project and install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+2. Configure environment variables:
+Create a `.env.local` file and add:
+```env
+API_KEY=your_api_key_here
+```
+
+3. Start the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The server will be running at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [Next.js](https://nextjs.org) - React Framework
+- [Tailwind CSS](https://tailwindcss.com) - Styling Framework
 
-## Learn More
+## Important Notes
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Ensure you provide a valid YouTube video URL
+- Keep your API key secure and never expose it publicly
+- Comply with YouTube's Terms of Service and usage policies
